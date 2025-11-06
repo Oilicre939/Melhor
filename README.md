@@ -1,98 +1,242 @@
-<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Diário de Telefones</title>
+  <style>
+    * { box-sizing: border-box; }
 
-<Html>
-  <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>formulário</title>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden; /* sem rolagem */
+    }
 
+    h1 {
+      color: #333;
+      margin-bottom: 8px;
+      text-align: center;
+      font-size: 20px;
+    }
 
-<style>
-  
-body{
-  background: green ;
-}
-h1{
-  color: black;
-  font-size: 30px;
-  text-align: center;
-  
-}
-h2{
-  color: black;
-  text-align: center;
-}
-input{
-  text-align:center;
-}
-</style>
-  </head>
+    #painel {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: stretch;
+      width: 100%;
+      height: 80%;
+      gap: 10px;
+      padding: 5px;
+    }
+
+    .telefone {
+      flex: 1;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .titulo {
+      background: #007bff;
+      color: white;
+      padding: 6px;
+      font-weight: bold;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+      flex: 1;
+      table-layout: fixed;
+    }
+
+    td {
+      border: 1px solid #ccc;
+      text-align: center;
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      padding: 4px;
+    }
+
+    td.active {
+      font-weight: bold;
+      background: #c8e6c9;
+    }
+
+    /* Mostra o número 1º, 2º, etc. */
+    td::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    td[data-mark]::before {
+      content: attr(data-mark);
+    }
+
+    .footer {
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+      margin-top: 3px;
+    }
+
+    @media (max-width: 900px) {
+      #painel {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+      }
+    }
+  </style>
+</head>
 <body>
-  
-  
-    <a href="../index.html"> ir para a pasta voltar </a>
-  
-  <H1> Formulário </H1>
-<h2>Criar primeiros passo para acessar um site</h2>
-  <from>
-    <!--Aqui coloquei e parate que diz que deve colocar nome...-->
-    <label for="coloca_nome">Nome:</label>
-    <!-- coloquei input tipo texto-->
-<input id="colucar_nome" type="text" placeholder="Digite o seu nome" required><br><br>
-<!--input tipo email-->
-<label for="coloca_email">Email:</label>
-<input id="colocar_email" type="email" placeholder="Digite seu email" required>
-  <br><br>
-  <!--input tipo palavra pass-->
-  <laber for="colocar_pass">pass:</laber>
-  <input id="coloca_pass" type="password" placeholder="digite seu palavra pass"required><br><br>
-  <!--input tipo submeter-->
-  <input type="submit" value=" clique aqui"><br><br><hr>
-  
-  <!--mais dois tipos de inputs abaixo-->
-  
-  <!--Usar input tipo rádio-->
-<h2> Qual é a sua fruta favorita</h2>
-<input type="radio" id="apple" name="fruta" value="Maça">
-<!--ksksksksk-->
-<label for="apple">maça</label><br>
-<input type="radio" id="orange" value"laranja" nome="fruta">
-<label for="orange">laranja</label><br>
+  <h1>Painel Diário de Telefones 📱</h1>
 
- <input type="radio" id="mango" name="fruta" value="manga">
- <strong><label fro="mango">manga</label></strong> <br>
- <input type="radio" id="tomato" nome="fruta" value="tomate">
- <label for="tomato">tomate</label><br><br><hr>
- 
- <!--usar input tipo checkboc-->
- <h2> Quais as coisas necessários</h2>
- 
- <input type="checkbox" id="first" name="coisa" value="telefone">
- <label for="first">telefone</label><br>
- <input type="checkbox" id="segundo" name="coisa" value="sapato">
- <label for="segundo">sapato</label>
-  <br>
-   <input type="checkbox" id="terceiro" name="coisa" value="bola">
-   <label for="terceiro">bola</label><br>
-    <input type="checkbox" id="quarto" name="coisa" value="chinelo">
-    <label for="quarto">chinelo</label><br>
-     <input type="checkbox" id="quinto" name="coisa" value="cama">
-     <label for="quinto">cama</label><br>
-     
-     <input type="checkbox" id="sexto" name="coisa" value="chinelo">
-     <label for="sexto">chinelo</label><br><br><hr>
-     <!--tag <select>-->
-     <h2>Escolha suas cores</h2>
-     <select name="cores" >
-       <option disabled selected value="selecione uma cor">selecione um cor</option>
-       <option value="azul">Azul</option>
-       <option value="vermelho">vermelho</option>
-       <option value="verde">verde</option>
-       <optio value="castanho">castanho</optio></select><br><br> 
-  </from> 
-       <!--Usar tag <textarea>-->
-       <h2>Escreva um comentário </h2>
-       <textare placeholder="escreve seu comentário aqui" name="mensagem" rows="20" cols="50"> </textarea>
-     
-    </body>
-</Html>
+  <div id="painel">
+    <!-- Telefone 1 -->
+    <div class="telefone" data-phone="1">
+      <div class="titulo">Telefone 1</div>
+      <table>
+        <tbody>
+          <tr data-row="1-1">
+            <td>EU1</td><td>A1</td><td>V1</td><td>K1</td><td>F1</td><td>LV1</td>
+          </tr>
+          <tr data-row="1-2">
+            <td>EU2</td><td>A2</td><td>V2</td><td>K2</td><td>F2</td><td>LV2</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Telefone 2 -->
+    <div class="telefone" data-phone="2">
+      <div class="titulo">Telefone 2</div>
+      <table>
+        <tbody>
+          <tr data-row="2-1">
+            <td>EU3</td><td>AB1</td><td>V3</td><td>I1</td><td>G1</td><td>FA1</td>
+          </tr>
+          <tr data-row="2-2">
+            <td>EU4</td><td>AB2</td><td>V4</td><td>I3</td><td>G2</td><td>FA2</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Telefone 3 -->
+    <div class="telefone" data-phone="3">
+      <div class="titulo">Telefone 3</div>
+      <table>
+        <tbody>
+          <tr data-row="3-1">
+            <td>I1</td><td>F1</td><td>V1</td><td>K1</td><td>A1</td><td>V3</td>
+          </tr>
+          <tr data-row="3-2">
+            <td>I3</td><td>F2</td><td>V2</td><td>K2</td><td>A2</td><td>V4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    Os cliques são resetados automaticamente à meia-noite ⏰
+  </div>
+
+  <script>
+    const hoje = new Date().toDateString();
+    let estado = JSON.parse(localStorage.getItem("estadoTelefones")) || { data: hoje, ativos: [] };
+
+    if (estado.data !== hoje) {
+      estado = { data: hoje, ativos: [] };
+      localStorage.setItem("estadoTelefones", JSON.stringify(estado));
+    }
+
+    function salvar() {
+      localStorage.setItem("estadoTelefones", JSON.stringify(estado));
+    }
+
+    document.querySelectorAll("td").forEach((td, index) => {
+      td.setAttribute("data-id", index);
+    });
+
+    estado.ativos.forEach(id => {
+      const cell = document.querySelector(`[data-id='${id}']`);
+      if (cell) cell.classList.add("active");
+    });
+
+    function atualizarIndicadores() {
+      document.querySelectorAll(".telefone").forEach(tel => {
+        const linhas = tel.querySelectorAll("tr");
+        const cima = linhas[0].querySelectorAll("td");
+        const baixo = linhas[1].querySelectorAll("td");
+
+        // limpa marcações antigas
+        cima.forEach(td => td.removeAttribute("data-mark"));
+        baixo.forEach(td => td.removeAttribute("data-mark"));
+
+        let contador = 1;
+        for (let i = 0; i < cima.length; i++) {
+          if (cima[i].classList.contains("active") && baixo[i].classList.contains("active")) {
+            cima[i].setAttribute("data-mark", contador + "º");
+            baixo[i].setAttribute("data-mark", contador + "º");
+            contador++;
+          }
+        }
+      });
+    }
+
+    document.addEventListener("click", e => {
+      if (e.target.tagName !== "TD") return;
+      const cell = e.target;
+      const id = cell.getAttribute("data-id");
+
+      cell.classList.toggle("active");
+      if (cell.classList.contains("active")) {
+        estado.ativos.push(id);
+      } else {
+        estado.ativos = estado.ativos.filter(x => x !== id);
+      }
+      salvar();
+      atualizarIndicadores();
+    });
+
+    atualizarIndicadores();
+
+    function resetarMeiaNoite() {
+      const agora = new Date();
+      const proxima = new Date();
+      proxima.setHours(24, 0, 0, 0);
+      const tempoRestante = proxima - agora;
+
+      setTimeout(() => {
+        localStorage.removeItem("estadoTelefones");
+        location.reload();
+      }, tempoRestante);
+    }
+
+    resetarMeiaNoite();
+  </script>
+</body>
+</html>
