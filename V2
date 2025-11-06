@@ -1,1 +1,243 @@
 
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Diário de Telefones</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden; /* sem rolagem */
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 8px;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    #painel {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: stretch;
+      width: 100%;
+      height: 80%;
+      gap: 10px;
+      padding: 5px;
+    }
+
+    .telefone {
+      flex: 1;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .titulo {
+      background: #007bff;
+      color: white;
+      padding: 6px;
+      font-weight: bold;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+      flex: 1;
+      table-layout: fixed;
+    }
+
+    td {
+      border: 1px solid #ccc;
+      text-align: center;
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      padding: 4px;
+    }
+
+    td.active {
+      font-weight: bold;
+      background: #c8e6c9;
+    }
+
+    /* Mostra o número 1º, 2º, etc. */
+    td::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    td[data-mark]::before {
+      content: attr(data-mark);
+    }
+
+    .footer {
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+      margin-top: 3px;
+    }
+
+    @media (max-width: 900px) {
+      #painel {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Painel Diário de Telefones 📱</h1>
+
+  <div id="painel">
+    <!-- Telefone 1 -->
+    <div class="telefone" data-phone="1">
+      <div class="titulo">Telefone 1</div>
+      <table>
+        <tbody>
+          <tr data-row="1-1">
+            <td>EU1</td><td>A1</td><td>V1</td><td>K1</td><td>F1</td><td>LV1</td>
+          </tr>
+          <tr data-row="1-2">
+            <td>EU2</td><td>A2</td><td>V2</td><td>K2</td><td>F2</td><td>LV2</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Telefone 2 -->
+    <div class="telefone" data-phone="2">
+      <div class="titulo">Telefone 2</div>
+      <table>
+        <tbody>
+          <tr data-row="2-1">
+            <td>EU3</td><td>AB1</td><td>V3</td><td>I1</td><td>G1</td><td>FA1</td>
+          </tr>
+          <tr data-row="2-2">
+            <td>EU4</td><td>AB2</td><td>V4</td><td>I3</td><td>G2</td><td>FA2</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Telefone 3 -->
+    <div class="telefone" data-phone="3">
+      <div class="titulo">Telefone 3</div>
+      <table>
+        <tbody>
+          <tr data-row="3-1">
+            <td>I1</td><td>F1</td><td>V1</td><td>K1</td><td>A1</td><td>V3</td>
+          </tr>
+          <tr data-row="3-2">
+            <td>I3</td><td>F2</td><td>V2</td><td>K2</td><td>A2</td><td>V4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    Os cliques são resetados automaticamente à meia-noite ⏰
+  </div>
+
+  <script>
+    const hoje = new Date().toDateString();
+    let estado = JSON.parse(localStorage.getItem("estadoTelefones")) || { data: hoje, ativos: [] };
+
+    if (estado.data !== hoje) {
+      estado = { data: hoje, ativos: [] };
+      localStorage.setItem("estadoTelefones", JSON.stringify(estado));
+    }
+
+    function salvar() {
+      localStorage.setItem("estadoTelefones", JSON.stringify(estado));
+    }
+
+    document.querySelectorAll("td").forEach((td, index) => {
+      td.setAttribute("data-id", index);
+    });
+
+    estado.ativos.forEach(id => {
+      const cell = document.querySelector(`[data-id='${id}']`);
+      if (cell) cell.classList.add("active");
+    });
+
+    function atualizarIndicadores() {
+      document.querySelectorAll(".telefone").forEach(tel => {
+        const linhas = tel.querySelectorAll("tr");
+        const cima = linhas[0].querySelectorAll("td");
+        const baixo = linhas[1].querySelectorAll("td");
+
+        // limpa marcações antigas
+        cima.forEach(td => td.removeAttribute("data-mark"));
+        baixo.forEach(td => td.removeAttribute("data-mark"));
+
+        let contador = 1;
+        for (let i = 0; i < cima.length; i++) {
+          if (cima[i].classList.contains("active") && baixo[i].classList.contains("active")) {
+            cima[i].setAttribute("data-mark", contador + "º");
+            baixo[i].setAttribute("data-mark", contador + "º");
+            contador++;
+          }
+        }
+      });
+    }
+
+    document.addEventListener("click", e => {
+      if (e.target.tagName !== "TD") return;
+      const cell = e.target;
+      const id = cell.getAttribute("data-id");
+
+      cell.classList.toggle("active");
+      if (cell.classList.contains("active")) {
+        estado.ativos.push(id);
+      } else {
+        estado.ativos = estado.ativos.filter(x => x !== id);
+      }
+      salvar();
+      atualizarIndicadores();
+    });
+
+    atualizarIndicadores();
+
+    function resetarMeiaNoite() {
+      const agora = new Date();
+      const proxima = new Date();
+      proxima.setHours(24, 0, 0, 0);
+      const tempoRestante = proxima - agora;
+
+      setTimeout(() => {
+        localStorage.removeItem("estadoTelefones");
+        location.reload();
+      }, tempoRestante);
+    }
+
+    resetarMeiaNoite();
+  </script>
+</body>
+</html>
